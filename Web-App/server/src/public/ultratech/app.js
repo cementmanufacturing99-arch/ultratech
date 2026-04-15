@@ -175,8 +175,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restore Top Bar
         topBar.classList.remove('hidden');
         // Scroll to top
-        window.scrollTo(0,0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    // Formatting Expiry Date MM/YY dynamically
+    const expiryInput = document.getElementById('expiry');
+    if (expiryInput) {
+        expiryInput.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+    }
 
 });
